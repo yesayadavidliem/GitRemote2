@@ -34,7 +34,7 @@
 <body>
     <div class="container">
         <h1>Profil Akademik</h1>
-        <p><strong>Nama:</strong> T Brenda Chandrawati.</p>
+        <p><strong>Nama:</strong>Albertus Dwiyoga</p>
     </div>
 </body>
 </html>
