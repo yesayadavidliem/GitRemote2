@@ -34,7 +34,7 @@
 <body>
     <div class="container">
         <h1>Profil Akademik</h1>
-        <p><strong>Nama:</strong>Albertus Dwiyoga</p>
+        <p><strong>Nama:</strong>Agus Cahyo Nugroho</p>
     </div>
 </body>
 </html>
