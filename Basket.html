@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BasketClub - Tempat belajar tentang sejarah, peraturan, teknik dasar, strategi, dan peralatan bola basket. Uji pengetahuan Anda dengan kuis interaktif kami.">
+    <title>BasketClub - Pengetahuan Tentang Bola Basket</title>
+    <link rel="icon" href="/path/to/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/path/to/font.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 50px;
+            font-size: 2.5em;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        .grid-item {
+            background-color: white;
+            color: #2c3e50;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .grid-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .grid-item p {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+        }
+        .history { background-color: #e74c3c; }
+        .rules { background-color: #f39c12; }
+        .techniques { background-color: #2ecc71; }
+        .equipment { background-color: #9b59b6; }
+        .strategy { background-color: #3498db; }
+        .fitness { background-color: #e67e22; }
+        .quiz { background-color: #8e44ad; }
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        footer img {
+            width: 30px;
+            height: 30px;
+            margin: 0 10px;
+            vertical-align: middle;
+        }
+        .detail-section {
+            display: none;
+            text-align: left;
+            margin: 50px 0;
+        }
+        .detail-section h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .detail-section p {
+            font-size: 1.1em;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        .quiz-section {
+            display: none;
+            text-align: center;
+            margin: 50px 0;
+        }
+        .quiz-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .quiz-option {
+            margin: 10px 0;
+            text-align: left;
+        }
+        .quiz-result {
+            font-size: 1.5em;
+            color: #27ae60;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .grid-item p {
+                font-size: 1em;
+            }
+        }
+    </style>
+
+    <script>
+        // Function to toggle between content sections
+        function showDetail(sectionId) {
+            var sections = document.querySelectorAll('.detail-section, .quiz-section');
+            sections.forEach(function(section) {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Quiz data
+        const quizData = [
+            {
+                question: "Siapa yang menciptakan permainan bola basket?",
+                options: ["Michael Jordan", "LeBron James", "Kobe Bryant", "Dr. James Naismith"],
+                answer: 3
+            },
+            {
+                question: "Berapa jumlah pemain dalam satu tim di lapangan dalam permainan bola basket?",
+                options: ["5 pemain", "7 pemain", "9 pemain", "11 pemain"],
+                answer: 0
+            },
+            {
+                question: "Di manakah garis tiga poin berada dalam permainan bola basket?",
+                options: ["6,75 meter", "7,24 meter", "8 meter", "5 meter"],
+                answer: 0
+            },
+            {
+                question: "Apa nama liga bola basket profesional Amerika Serikat?",
+                options: ["NBA", "NFL", "NHL", "MLB"],
+                answer: 0
+            },
+            {
+                question: "Apa itu 'dribbling' dalam permainan bola basket?",
+                options: ["Memukul bola dengan tangan", "Melempar bola", "Menggiring bola dengan tangan", "Menendang bola"],
+                answer: 2
+            },
+            {
+                question: "Berapa lama waktu yang diberikan untuk menyerang dalam permainan bola basket?",
+                options: ["8 detik", "10 detik", "24 detik", "30 detik"],
+                answer: 2
+            },
+            {
+                question: "Apa itu 'rebound' dalam bola basket?",
+                options: ["Memukul bola", "Mengambil bola setelah tembakan gagal", "Menggiring bola", "Melempar bola"],
+                answer: 1
+            },
+            {
+                question: "Siapa pemain NBA yang dikenal dengan julukan 'Air Jordan'?",
+                options: ["LeBron James", "Stephen Curry", "Michael Jordan", "Shaquille O'Neal"],
+                answer: 2
+            },
+            {
+                question: "Berapa tinggi standar ring basket dari permukaan lantai?",
+                options: ["2,5 meter", "3 meter", "3,05 meter", "3,5 meter"],
+                answer: 2
+            },
+            {
+                question: "Di mana lokasi Olimpiade pertama yang menyertakan bola basket?",
+                options: ["Berlin", "Athena", "Tokyo", "London"],
+                answer: 0
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuiz() {
+            const questionEl = document.getElementById('quiz-question');
+            const optionsEl = document.getElementById('quiz-options');
+            const feedbackEl = document.getElementById('quiz-feedback');
+
+            questionEl.textContent = quizData[currentQuestion].question;
+            optionsEl.innerHTML = '';
+            feedbackEl.innerHTML = '';
+
+            quizData[currentQuestion].options.forEach((option, index) => {
+                optionsEl.innerHTML += `
+                    <div class="quiz-option">
+                        <input type="radio" name="quiz" id="option${index}" value="${index}">
+                        <label for="option${index}">${option}</label>
+                    </div>
+                `;
+            });
+        }
+
+        function submitQuiz() {
+            const options = document.querySelectorAll('input[name="quiz"]');
+            let selectedOption;
+            options.forEach((option) => {
+                if (option.checked) {
+                    selectedOption = option.value;
+                }
+            });
+
+            if (selectedOption !== undefined) {
+                const feedbackEl = document.getElementById('quiz-feedback');
+                const correctAnswer = quizData[currentQuestion].answer;
+
+                if (selectedOption == correctAnswer) {
+                    score++;
+                    feedbackEl.innerHTML = `<p class="correct-feedback">Jawaban benar!</p>`;
+                } else {
+                    feedbackEl.innerHTML = `
+                        <p class="incorrect-feedback">Jawaban salah!</p>
+                        <p class="correct-answer">Jawaban yang benar: ${quizData[currentQuestion].options[correctAnswer]}</p>
+                    `;
+                }
+
+                currentQuestion++;
+                if (currentQuestion < quizData.length) {
+                    setTimeout(() => {
+                        loadQuiz();
+                    }, 2000); // Delay 2 detik sebelum pertanyaan berikutnya
+                } else {
+                    showResult();
+                }
+            } else {
+                alert('Pilih salah satu jawaban!');
+            }
+        }
+
+        function showResult() {
+            const quizSection = document.querySelector('.quiz-section');
+            const resultEl = document.getElementById('quiz-result');
+
+            quizSection.style.display = 'none';
+            resultEl.style.display = 'block';
+            resultEl.textContent = `Anda menjawab ${score} dari ${quizData.length} pertanyaan dengan benar!`;
+        }
+    </script>
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>BasketClub - Pengetahuan Tentang Bola Basket</h1>
+        
+        <div class="grid-container">
+            <div class="grid-item history" onclick="showDetail('sejarah')">
+                <p>Sejarah Bola Basket</p>
+            </div>
+            <div class="grid-item rules" onclick="showDetail('peraturan')">
+                <p>Peraturan Permainan</p>
+            </div>
+            <div class="grid-item techniques" onclick="showDetail('teknik')">
+                <p>Teknik Dasar</p>
+            </div>
+            <div class="grid-item equipment" onclick="showDetail('peralatan')">
+                <p>Peralatan</p>
+            </div>
+            <div class="grid-item strategy" onclick="showDetail('strategi')">
+                <p>Strategi Permainan</p>
+            </div>
+            <div class="grid-item fitness" onclick="showDetail('kebugaran')">
+                <p>Kebugaran Fisik</p>
+            </div>
+            <div class="grid-item quiz" onclick="showDetail('kuis'); loadQuiz();">
+                <p>Mulai Kuis</p>
+            </div>
+        </div>
+
+        <div class="detail-section" id="sejarah">
+            <h2>Sejarah Bola Basket</h2>
+            <p>1. Bola basket diciptakan oleh Dr. James Naismith pada tahun 1891 di Springfield, Massachusetts, AS.</p>
+            <p>2. Tujuan awalnya adalah membuat permainan dalam ruangan untuk musim dingin.</p>
+            <p>3. Bola basket diperkenalkan dalam Olimpiade pada tahun 1936 di Berlin.</p>
+            <p>4. NBA (National Basketball Association) didirikan pada tahun 1946.</p>
+            <p>5. Michael Jordan dianggap sebagai pemain bola basket terbesar sepanjang masa.</p>
+            <p>6. Pertandingan NBA Finals 1996 dianggap sebagai yang paling bersejarah dalam sejarah NBA.</p>
+        </div>
+
+        <div class="detail-section" id="peraturan">
+            <h2>Peraturan Permainan</h2>
+            <p>1. Tim terdiri dari lima pemain di lapangan.</p>
+            <p>2. Pertandingan terdiri dari empat kuarter, masing-masing 10-12 menit.</p>
+            <p>3. Pemain hanya bisa melangkah dua kali tanpa dribbling.</p>
+            <p>4. Ada tiga poin jika bola dilempar dari luar garis tiga poin.</p>
+            <p>5. Pemain dilarang melakukan pelanggaran fisik berat (foul).</p>
+            <p>6. Setiap tim memiliki 24 detik untuk mencoba mencetak poin.</p>
+        </div>
+
+        <div class="detail-section" id="teknik">
+            <h2>Teknik Dasar</h2>
+            <p>1. Dribbling: Menggiring bola dengan satu tangan sambil bergerak.</p>
+            <p>2. Passing: Operan ke rekan satu tim, seperti chest pass, bounce pass, dan overhead pass.</p>
+            <p>3. Shooting: Menembak bola ke keranjang, termasuk lay-up, jump shot, dan free throw.</p>
+            <p>4. Pivot: Berputar dengan satu kaki tetap di tanah.</p>
+            <p>5. Rebounding: Mengambil bola setelah tembakan gagal.</p>
+            <p>6. Defense: Bertahan, termasuk man-to-man defense dan zone defense.</p>
+        </div>
+
+        <div class="detail-section" id="peralatan">
+            <h2>Peralatan Bola Basket</h2>
+            <p>1. Bola basket terbuat dari kulit atau bahan sintetis.</p>
+            <p>2. Ring basket terbuat dari besi dengan diameter 45 cm.</p>
+            <p>3. Lapangan basket berukuran 28 x 15 meter.</p>
+            <p>4. Garis tiga poin berada di jarak 6,75 meter dari keranjang (7,24 meter di NBA).</p>
+            <p>5. Jaring net digunakan untuk mengurangi kecepatan bola setelah mencetak poin.</p>
+            <p>6. Sepatu basket dirancang untuk memberikan dukungan pergelangan kaki yang baik.</p>
+        </div>
+
+        <div class="detail-section" id="strategi">
+            <h2>Strategi Permainan</h2>
+            <p>1. Pick and Roll: Teknik di mana seorang pemain memberikan screen pada pemain bertahan dan kemudian bergerak ke arah ring.</p>
+            <p>2. Fast Break: Serangan cepat yang dilakukan setelah pertahanan berhasil merebut bola.</p>
+            <p>3. Zone Defense: Pertahanan di mana pemain menjaga area tertentu daripada pemain lawan.</p>
+            <p>4. Man-to-Man Defense: Setiap pemain menjaga pemain lawan tertentu secara ketat.</p>
+            <p>5. Iso Play: Permainan isolasi di mana seorang pemain ditinggalkan untuk bermain satu lawan satu.</p>
+        </div>
+
+        <div class="detail-section" id="kebugaran">
+            <h2>Kebugaran Fisik</h2>
+            <p>1. Push-ups: Melatih kekuatan otot dada, bahu, dan tricep.</p>
+            <p>2. Jump rope: Meningkatkan ketahanan kardio dan kecepatan kaki.</p>
+            <p>3. Sprint: Meningkatkan kecepatan dan kelincahan.</p>
+            <p>4. Squats: Meningkatkan kekuatan otot kaki dan stabilitas.</p>
+            <p>5. Core exercises: Latihan inti seperti plank untuk meningkatkan stabilitas tubuh.</p>
+        </div>
+
+        <div class="quiz-section" id="kuis">
+            <h2>Uji Pengetahuan Anda!</h2>
+            <p id="quiz-question">Pertanyaan akan muncul di sini...</p>
+            <div id="quiz-options"></div>
+            <button onclick="submitQuiz()">Submit</button>
+            <div id="quiz-feedback" class="feedback"></div>
+        </div>
+
+        <div id="quiz-result" class="quiz-result" style="display:none;"></div>
+    </div>
+
+   <footer>
+        <p>&copy; 2024 BasketClub | Follow Me</p>
+        <a href="https://www.instagram.com" target="_blank" aria-label="Buka Instagram">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Ikon Instagram">
+        </a>
+        <a href="https://www.twitter.com" target="_blank" aria-label="Buka Twitter">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/twitter-squared.png" alt="Ikon Twitter">
+        </a>
+        <a href="https://www.facebook.com" target="_blank" aria-label="Buka Facebook">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-f.png" alt="Ikon Facebook">
+        </a>
+    </footer>
+
+</body>
+</html>
